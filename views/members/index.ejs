@@ -1,0 +1,235 @@
+<%- include('../partials/header') %>
+
+<div class="flex min-h-screen">
+    <%- include('../partials/sidebar') %>
+
+    <main class="flex-1 p-8 bg-gym-dark">
+        <%- include("../partials/messages") %>
+        
+        <!-- Page Header -->
+        <div class="mb-10">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-4xl font-display tracking-tight text-white mb-2">
+                        <span class="gradient-text">MEMBER</span> MANAGEMENT
+                    </h1>
+                    <div class="h-1 w-24 bg-gradient-to-r from-gym-red to-gym-orange rounded-full"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add New Member Form -->
+        <div class="bg-gym-gray border border-gym-light rounded-2xl shadow-xl overflow-hidden mb-10">
+            <div class="p-6 border-b border-gym-light bg-gradient-to-r from-gym-light to-gym-gray">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-gym-red/10 rounded-lg">
+                        <svg class="w-6 h-6 text-gym-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-display tracking-wide text-white">ADD NEW MEMBER</h2>
+                </div>
+            </div>
+
+            <form action="/members/add" method="POST" class="p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Full Name -->
+                    <div class="flex flex-col">
+                        <label class="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wide">Full Name *</label>
+                        <input type="text" name="name" placeholder="Enter full name" 
+                            class="bg-gym-light border border-gym-light text-white px-4 py-3 rounded-xl focus:border-gym-red focus:ring-2 focus:ring-gym-red/20 outline-none transition-all placeholder-gray-600" required>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="flex flex-col">
+                        <label class="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wide">Email Address *</label>
+                        <input type="email" name="email" placeholder="email@example.com" 
+                            class="bg-gym-light border border-gym-light text-white px-4 py-3 rounded-xl focus:border-gym-red focus:ring-2 focus:ring-gym-red/20 outline-none transition-all placeholder-gray-600" required>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="flex flex-col">
+                        <label class="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wide">Phone Number</label>
+                        <input type="text" name="phone" placeholder="+91 00000 00000" 
+                            class="bg-gym-light border border-gym-light text-white px-4 py-3 rounded-xl focus:border-gym-red focus:ring-2 focus:ring-gym-red/20 outline-none transition-all placeholder-gray-600">
+                    </div>
+
+                    <!-- Age -->
+                    <div class="flex flex-col">
+                        <label class="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wide">Age</label>
+                        <input type="number" name="age" placeholder="Enter age" 
+                            class="bg-gym-light border border-gym-light text-white px-4 py-3 rounded-xl focus:border-gym-red focus:ring-2 focus:ring-gym-red/20 outline-none transition-all placeholder-gray-600">
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="flex flex-col">
+                        <label class="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wide">Gender</label>
+                        <select name="gender" 
+                            class="bg-gym-light border border-gym-light text-white px-4 py-3 rounded-xl focus:border-gym-red focus:ring-2 focus:ring-gym-red/20 outline-none transition-all">
+                            <option value="" disabled selected class="bg-gym-gray">Select Gender</option>
+                            <option value="Male" class="bg-gym-gray">Male</option>
+                            <option value="Female" class="bg-gym-gray">Female</option>
+                            <option value="Other" class="bg-gym-gray">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Membership Start Date -->
+                    <div class="flex flex-col">
+                        <label class="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wide">Start Date *</label>
+                        <input type="date" name="startDate" 
+                            class="bg-gym-light border border-gym-light text-white px-4 py-3 rounded-xl focus:border-gym-red focus:ring-2 focus:ring-gym-red/20 outline-none transition-all" required>
+                    </div>
+
+                    <!-- Plan Selection -->
+                    <div class="flex flex-col md:col-span-2 lg:col-span-3">
+                        <label class="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wide">Membership Plan *</label>
+                        <select name="plan" 
+                            class="bg-gym-light border border-gym-light text-white px-4 py-3 rounded-xl focus:border-gym-red focus:ring-2 focus:ring-gym-red/20 outline-none transition-all" required>
+                            <option value="" disabled selected class="bg-gym-gray">Choose Membership Plan</option>
+                            <% plans.forEach(plan => { %>
+                                <option value="<%= plan._id %>" class="bg-gym-gray">
+                                    <%= plan.planName %> - ₹<%= plan.price %> (<%= plan.durationInDays %> Days)
+                                </option>
+                            <% }) %>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex justify-end mt-8">
+                    <button type="submit" 
+                        class="bg-gradient-to-r from-gym-red to-gym-orange text-white font-bold px-10 py-3.5 rounded-xl hover:shadow-2xl hover:shadow-gym-red/50 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] uppercase tracking-wider text-sm">
+                        <span class="flex items-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            <span>Save Member</span>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Members Table -->
+        <div class="bg-gym-gray border border-gym-light rounded-2xl shadow-xl overflow-hidden">
+            <div class="p-6 border-b border-gym-light bg-gradient-to-r from-gym-light to-gym-gray">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-gym-red/10 rounded-lg">
+                        <svg class="w-6 h-6 text-gym-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-display tracking-wide text-white">ALL MEMBERS</h2>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gym-light border-b border-gym-light">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Member Info</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Contact</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Plan Details</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Duration</th>
+                            <th class="px-6 py-4 text-center text-xs font-bold text-gray-400 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gym-light">
+                        <% members.forEach(member => { %>
+                        <tr class="transition-colors <%= member.isExpired ? 'bg-red-900/20 hover:bg-red-900/30' : 'hover:bg-gym-light' %> group">
+                            <!-- Member Info -->
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-gym-red to-gym-orange rounded-full flex items-center justify-center font-display text-white text-xl flex-shrink-0">
+                                        <%= member.name.charAt(0).toUpperCase() %>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="font-bold <%= member.isExpired ? 'text-red-400' : 'text-white' %>">
+                                                <%= member.name %>
+                                            </span>
+                                            <% if(member.isExpired) { %>
+                                                <span class="px-2 py-0.5 bg-red-600 text-white text-[10px] font-bold rounded-full uppercase tracking-wide">Expired</span>
+                                            <% } %>
+                                        </div>
+                                        <div class="text-xs text-gray-500 mt-1">
+                                            <%= member.age %> years • <%= member.gender %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <!-- Contact -->
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-300 font-medium"><%= member.email %></div>
+                                <div class="text-sm text-gray-500 mt-1"><%= member.phone %></div>
+                            </td>
+
+                            <!-- Plan Details -->
+                            <td class="px-6 py-4">
+                                <% if (member.plan) { %>
+                                    <div class="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-gym-red/20 to-gym-orange/20 border border-gym-red/30 rounded-lg">
+                                        <span class="text-gym-red font-bold text-sm uppercase tracking-wide">
+                                            <%= member.plan.planName %>
+                                        </span>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-2">
+                                        ₹<%= member.plan.price %> / <%= member.plan.duration %>
+                                    </div>
+                                <% } else { %>
+                                    <span class="text-gray-600 italic text-sm">No Plan Assigned</span>
+                                <% } %>
+                            </td>
+
+                            <!-- Duration -->
+                            <td class="px-6 py-4">
+                                <div class="space-y-1">
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-4 h-4 text-gym-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                        </svg>
+                                        <span class="text-sm font-semibold text-gray-300">
+                                            <%= member.startDate.toDateString() %>
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-4 h-4 <%= member.isExpired ? 'text-red-500' : 'text-gray-500' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        <span class="text-sm font-bold <%= member.isExpired ? 'text-red-500' : 'text-gray-500' %>">
+                                            <%= member.expiryDate.toDateString() %>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <!-- Actions -->
+                            <td class="px-6 py-4">
+                                <div class="flex justify-center items-center space-x-3">
+                                    <a href="/members/edit/<%= member._id %>" 
+                                        class="flex items-center space-x-1 px-4 py-2 bg-gym-light hover:bg-blue-600/20 border border-blue-600/30 text-blue-400 hover:text-blue-300 rounded-lg transition-all group">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                        </svg>
+                                        <span class="text-sm font-semibold">Edit</span>
+                                    </a>
+                                    <a href="/members/delete/<%= member._id %>" 
+                                        onclick="return confirm('Are you sure you want to delete this member?')"
+                                        class="flex items-center space-x-1 px-4 py-2 bg-gym-light hover:bg-red-600/20 border border-red-600/30 text-red-400 hover:text-red-300 rounded-lg transition-all group">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                        <span class="text-sm font-semibold">Delete</span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'gym-dark': '#0A0A0A',
+                        'gym-gray': '#1A1A1A',
+                        'gym-light': '#2A2A2A',
+                        'gym-red': '#EF4444',
+                        'gym-orange': '#F97316',
+                    },
+                    fontFamily: {
+                        'display': ['Bebas Neue', 'sans-serif'],
+                        'body': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0A0A0A 0%, #1A1A1A 100%);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #EF4444 0%, #F97316 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(239, 68, 68, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(239, 68, 68, 0.6);
+            }
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        .login-card {
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #EF4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+        
+        .bg-pattern {
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(239, 68, 68, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
+        }
+    </style>
+    <title>GymMaster Pro | Admin Login</title>
+</head>
+<body class="bg-gym-dark flex items-center justify-center min-h-screen bg-pattern">
+
+    <div class="login-card p-10 rounded-2xl shadow-2xl w-full max-w-md mx-4">
+        <!-- Logo and Header -->
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-gym-red to-gym-orange rounded-2xl mb-4 pulse-glow">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+            </div>
+            <h1 class="text-5xl font-display tracking-tight mb-2">
+                <span class="gradient-text">GYM</span><span class="text-white">MASTER</span>
+            </h1>
+            <div class="h-1 w-20 bg-gradient-to-r from-gym-red to-gym-orange rounded-full mx-auto mb-3"></div>
+            <p class="text-gray-400 text-sm font-semibold uppercase tracking-widest">Admin Access Only</p>
+        </div>
+
+        <!-- Login Form -->
+        <form action="/login" method="POST" class="space-y-6">
+            <div>
+                <label class="block text-gray-300 text-sm font-semibold mb-3 uppercase tracking-wide">Username</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                    </div>
+                    <input type="text" name="username" required 
+                        class="w-full pl-12 pr-4 py-3.5 bg-gym-light border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-gym-red transition-all duration-300"
+                        placeholder="admin@gym.com">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-gray-300 text-sm font-semibold mb-3 uppercase tracking-wide">Password</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <input type="password" name="password" required 
+                        class="w-full pl-12 pr-4 py-3.5 bg-gym-light border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-gym-red transition-all duration-300"
+                        placeholder="••••••••">
+                </div>
+            </div>
+
+            <button type="submit" 
+                class="w-full bg-gradient-to-r from-gym-red to-gym-orange text-white font-bold py-4 rounded-xl hover:shadow-2xl hover:shadow-gym-red/50 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] uppercase tracking-wider text-sm">
+                <span class="flex items-center justify-center space-x-2">
+                    <span>Sign In</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                    </svg>
+                </span>
+            </button>
+        </form>
+
+        <!-- Footer Text -->
+        <div class="mt-8 text-center">
+            <p class="text-gray-600 text-xs uppercase tracking-widest">Secure Admin Portal</p>
+        </div>
+    </div>
+
+    <!-- Decorative Elements -->
+    <div class="fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-gym-red via-gym-orange to-gym-red"></div>
+    <div class="fixed bottom-0 left-0 w-full h-1 bg-gradient-to-r from-gym-red via-gym-orange to-gym-red"></div>
+
+</body>
+</html>

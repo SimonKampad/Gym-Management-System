@@ -1,0 +1,90 @@
+<aside class="w-72 bg-gym-gray min-h-screen text-white flex flex-col shadow-2xl border-r border-gym-light relative overflow-hidden">
+    <!-- Accent gradient overlay -->
+    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-gym-red via-gym-orange to-gym-red"></div>
+    
+    <!-- Header/Brand -->
+    <div class="p-8 border-b border-gym-light relative">
+        <div class="flex items-center space-x-3 mb-2">
+            <div class="w-12 h-12 bg-gradient-to-br from-gym-red to-gym-orange rounded-xl flex items-center justify-center shadow-lg pulse-glow">
+                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-3xl font-display tracking-tight">
+                    <span class="gradient-text">GYM</span><span class="text-white">MASTER</span>
+                </h1>
+            </div>
+        </div>
+        <p class="text-[10px] text-gray-500 uppercase tracking-widest font-semibold pl-1">Admin Control Panel</p>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 p-5 space-y-1.5">
+        <a href="/dashboard" class="flex items-center space-x-3 p-3.5 rounded-xl hover:bg-gym-light transition-all group relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-gym-red/0 to-gym-red/0 group-hover:from-gym-red/10 group-hover:to-gym-orange/10 transition-all"></div>
+            <div class="relative z-10 flex items-center space-x-3 w-full">
+                <div class="p-2 bg-gym-light rounded-lg group-hover:bg-gym-red/20 transition-all">
+                    <svg class="w-5 h-5 text-gray-400 group-hover:text-gym-red transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                    </svg>
+                </div>
+                <span class="font-semibold text-gray-300 group-hover:text-white transition-all">Dashboard</span>
+            </div>
+        </a>
+        
+        <a href="/members" class="flex items-center space-x-3 p-3.5 rounded-xl hover:bg-gym-light transition-all group relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-gym-red/0 to-gym-red/0 group-hover:from-gym-red/10 group-hover:to-gym-orange/10 transition-all"></div>
+            <div class="relative z-10 flex items-center space-x-3 w-full">
+                <div class="p-2 bg-gym-light rounded-lg group-hover:bg-gym-red/20 transition-all">
+                    <svg class="w-5 h-5 text-gray-400 group-hover:text-gym-red transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 01-9-3.812"></path>
+                    </svg>
+                </div>
+                <span class="font-semibold text-gray-300 group-hover:text-white transition-all">Members</span>
+            </div>
+        </a>
+
+        <a href="/plans" class="flex items-center space-x-3 p-3.5 rounded-xl hover:bg-gym-light transition-all group relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-gym-red/0 to-gym-red/0 group-hover:from-gym-red/10 group-hover:to-gym-orange/10 transition-all"></div>
+            <div class="relative z-10 flex items-center space-x-3 w-full">
+                <div class="p-2 bg-gym-light rounded-lg group-hover:bg-gym-red/20 transition-all">
+                    <svg class="w-5 h-5 text-gray-400 group-hover:text-gym-red transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                    </svg>
+                </div>
+                <span class="font-semibold text-gray-300 group-hover:text-white transition-all">Plans</span>
+            </div>
+        </a>
+       <a href="/trainers" class="flex items-center space-x-3 p-3.5 rounded-xl hover:bg-gym-light transition-all group relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-gym-red/0 to-gym-red/0 group-hover:from-gym-red/10 group-hover:to-gym-orange/10 transition-all"></div>
+    <div class="relative z-10 flex items-center space-x-3 w-full">
+        <div class="p-2 bg-gym-light rounded-lg group-hover:bg-gym-red/20 transition-all">
+            <svg class="w-5 h-5 text-gray-400 group-hover:text-gym-red transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" class="opacity-0 group-hover:opacity-100 transition-opacity" />
+            </svg>
+        </div>
+        <span class="font-semibold text-gray-300 group-hover:text-white transition-all">Trainers</span>
+    </div>
+</a>
+    </nav>
+
+    <!-- Logout Section -->
+    <div class="p-5 border-t border-gym-light">
+        <a href="/logout" class="flex items-center space-x-3 p-3.5 bg-gym-light hover:bg-red-900/30 rounded-xl transition-all group relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-red-600/0 to-red-600/0 group-hover:from-red-600/20 group-hover:to-red-700/20 transition-all"></div>
+            <div class="relative z-10 flex items-center space-x-3 w-full">
+                <div class="p-2 bg-red-900/20 rounded-lg group-hover:bg-red-900/40 transition-all">
+                    <svg class="w-5 h-5 text-red-400 group-hover:text-red-300 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                </div>
+                <span class="font-semibold text-red-400 group-hover:text-red-300 transition-all">Sign Out</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Bottom accent line -->
+    <div class="h-1 bg-gradient-to-r from-gym-red via-gym-orange to-gym-red"></div>
+</aside>

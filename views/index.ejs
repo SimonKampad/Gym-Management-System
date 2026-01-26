@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>GymMaster Pro | Ultimate Fitness Management</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'gym-red': '#ef4444',
+                        'gym-orange': '#f97316',
+                        'gym-dark': '#0f172a',
+                        'gym-gray': '#1e293b',
+                    },
+                    fontFamily: {
+                        'display': ['Montserrat', 'sans-serif'],
+                        'sans': ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(to right, #ef4444, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-overlay {
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 1));
+        }
+    </style>
+</head>
+<body class="bg-gym-dark text-white font-sans">
+    
+    <nav class="absolute top-0 w-full z-50 p-6">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-display font-black tracking-tighter italic">
+                GYM<span class="text-gym-red">MASTER</span> PRO
+            </h1>
+            <div>
+                <a href="/login" class="px-6 py-2 bg-gradient-to-r from-gym-red to-gym-orange rounded-full font-bold text-sm uppercase tracking-widest hover:shadow-lg hover:shadow-gym-red/40 transition-all transform hover:-translate-y-1">
+                    Admin Portal
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+                 alt="Professional Gym Equipment" 
+                 class="w-full h-full object-cover">
+            <div class="absolute inset-0 hero-overlay"></div>
+        </div>
+
+        <div class="relative z-10 container mx-auto px-6 text-center">
+            <h2 class="text-6xl md:text-8xl font-display font-black leading-tight mb-6">
+                LEVEL UP YOUR <br>
+                <span class="gradient-text uppercase">MANAGEMENT</span>
+            </h2>
+            <p class="max-w-2xl mx-auto text-gray-400 text-lg md:text-xl mb-10 leading-relaxed">
+                The most powerful, all-in-one suite to manage members, track trainers, and scale your fitness business with precision.
+            </p>
+            
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+                <a href="/login" class="w-full md:w-auto px-10 py-4 bg-white text-gym-dark font-black rounded-xl hover:bg-gray-200 transition-all text-lg uppercase tracking-tight">
+                    Get Started Now
+                </a>
+                <div class="flex items-center space-x-4">
+                    <div class="flex -space-x-3">
+                        <img class="w-10 h-10 rounded-full border-2 border-gym-dark" src="https://i.pravatar.cc/100?u=1" alt="User">
+                        <img class="w-10 h-10 rounded-full border-2 border-gym-dark" src="https://i.pravatar.cc/100?u=2" alt="User">
+                        <img class="w-10 h-10 rounded-full border-2 border-gym-dark" src="https://i.pravatar.cc/100?u=3" alt="User">
+                    </div>
+                    <p class="text-sm font-semibold text-gray-300">Trusted by 500+ Gym Owners</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-gym-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </header>
+
+    <section class="py-24 container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div class="bg-gym-gray p-8 rounded-3xl border border-white/5">
+                <div class="text-gym-red mb-4 text-3xl font-black italic">01.</div>
+                <h4 class="text-xl font-bold mb-2">Member Control</h4>
+                <p class="text-gray-500 text-sm">Automated registration and smart expiry tracking system.</p>
+            </div>
+            <div class="bg-gym-gray p-8 rounded-3xl border border-white/5">
+                <div class="text-gym-red mb-4 text-3xl font-black italic">02.</div>
+                <h4 class="text-xl font-bold mb-2">Trainer Squad</h4>
+                <p class="text-gray-500 text-sm">Organize your specialized staff and manage salaries efficiently.</p>
+            </div>
+            <div class="bg-gym-gray p-8 rounded-3xl border border-white/5">
+                <div class="text-gym-red mb-4 text-3xl font-black italic">03.</div>
+                <h4 class="text-xl font-bold mb-2">Smart Pricing</h4>
+                <p class="text-gray-500 text-sm">Create and modify membership plans in seconds.</p>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
