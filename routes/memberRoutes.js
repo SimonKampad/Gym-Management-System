@@ -76,4 +76,26 @@ router.get('/members/delete/:id', auth, async (req, res) => {
     }
 });
 
+router.post('/members/pay/:id', auth, async (req, res) => {
+    try {
+        const member = await Member.findById(req.params.id).populate('plan');
+        
+        // Calculate Expiry: Today + Plan Duration
+        const expiry = new Date();
+        expiry.setDate(expiry.getDate() + member.plan.durationInDays);
+
+        await Member.findByIdAndUpdate(req.params.id, {
+            paymentStatus: 'Paid',
+            startDate: new Date(),
+            expiryDate: expiry
+        });
+
+        req.flash('success_msg', `Payment recorded. Plan expires on ${expiry.toDateString()}`);
+        res.redirect('/members');
+    } catch (err) {
+        req.flash('error_msg', 'Payment update failed');
+        res.redirect('/members');
+    }
+});
+
 module.exports = router;

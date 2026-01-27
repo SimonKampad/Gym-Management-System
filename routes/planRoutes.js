@@ -12,12 +12,13 @@ router.get('/plans', auth, async (req, res) => {
 // POST: Add new plan (e.g., "Monthly Gold - $50")
 router.post('/plans/add', auth, async (req, res) => {
     try {
-        const { planName, price, durationInDays } = req.body;
+        const { planName, price, durationInDays, description } = req.body;
         
         const newPlan = new Plan({
             planName,
             price,
-            durationInDays
+            durationInDays,
+            description
         });
 
         await newPlan.save();

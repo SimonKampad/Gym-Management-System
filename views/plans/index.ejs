@@ -41,6 +41,11 @@
                         <label class="text-xs font-bold text-gray-500 mb-2 uppercase">Days</label>
                         <input type="number" name="durationInDays" placeholder="30" class="bg-gym-light border border-gym-light text-white px-4 py-3 rounded-xl focus:border-gym-red focus:ring-2 focus:ring-gym-red/20 outline-none transition-all" required>
                     </div>
+                    <div class="flex flex-col">
+                        <label class="text-xs font-bold text-gray-500 mb-2 uppercase">Description/Benefits </label>
+                        <input type="text" name="description" placeholder="Yoga, Cardio, Steam Bath" 
+                            class="bg-gym-light border border-gym-light text-white px-4 py-3 rounded-xl focus:border-gym-red outline-none transition-all" required>
+                    </div>
                 </div>
                 <div class="flex justify-end mt-6">
                     <button type="submit" class="bg-gradient-to-r from-gym-red to-gym-orange text-white font-black px-8 py-3 rounded-xl hover:shadow-lg hover:shadow-gym-red/40 transition-all transform hover:-translate-y-1 uppercase text-xs tracking-widest">
@@ -65,7 +70,7 @@
                             </a>
                         </div>
 
-                        <h3 class="text-2xl font-display font-bold text-white mb-2 uppercase tracking-tight">
+                        <h3 class="text-2xl font-display font-extrabold text-white mb-2 uppercase tracking-[0.08em]">
                             <%= plan.planName %>
                         </h3>
                         
@@ -74,7 +79,7 @@
                             <span class="text-gray-500 ml-2 text-sm font-semibold uppercase tracking-widest">/ <%= plan.durationInDays %> Days</span>
                         </div>
 
-                        <ul class="space-y-4 mb-8">
+                        <!-- <ul class="space-y-4 mb-8">
                             <li class="flex items-center text-sm text-gray-400">
                                 <svg class="w-4 h-4 mr-3 text-gym-green" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
                                 Full Gym Access
@@ -83,7 +88,21 @@
                                 <svg class="w-4 h-4 mr-3 text-gym-green" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
                                 Digital Membership Tracking
                             </li>
-                        </ul>
+                        </ul> -->
+                        <!-- <p class="text-sm text-gray-400 mb-6 italic">
+                            "<%= plan.description %>"
+                        </p> -->
+
+<ul class="space-y-3 mb-8">
+    <% plan.description.split(',').forEach(benefit => { %>
+        <li class="flex items-center text-xs text-gray-300">
+            <svg class="w-4 h-4 mr-2 text-gym-green" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+            </svg>
+            <%= benefit.trim() %>
+        </li>
+    <% }) %>
+</ul>
 
                         <div class="pt-6 border-t border-gym-light">
                             <div class="flex items-center justify-between text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">
