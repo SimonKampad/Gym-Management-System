@@ -1,0 +1,26 @@
+<%- include('../partials/header') %>
+<div class="flex min-h-screen">
+    <%- include('../partials/sidebar') %>
+    
+    <main class="flex-1 p-8 bg-gym-dark flex flex-col items-center justify-center">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-display text-white mb-2">DAILY <span class="gradient-text">ENTRY QR</span></h1>
+            <p class="text-gray-400">Scan this QR code to mark your check-in and record your attendance</p>
+            <p class="text-gym-red font-mono mt-2 text-sm uppercase tracking-widest">Code: <%= todayCode %></p>
+        </div>
+
+        <div class="bg-white p-8 rounded-3xl shadow-[0_0_50px_rgba(239,68,68,0.3)]">
+            <img src="<%= qrImage %>" alt="Gym QR Code" class="w-64 h-64">
+        </div>
+
+        <div class="mt-10 text-gray-500 text-xs flex items-center">
+            <div class="w-2 h-2 bg-green-500 rounded-full animate-ping mr-2"></div>
+            QR Code is Live for <%= new Date().toDateString() %>
+        </div>
+        
+        <a href="/admin/attendance/list" class="mt-8 text-gym-red hover:underline font-bold uppercase text-xs tracking-widest">
+            View Who is in the Gym →
+        </a>
+    </main>
+</div>
+<%- include('../partials/footer') %>

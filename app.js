@@ -17,6 +17,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const cron = require('node-cron');
 const sendExpiryWarning = require('./utils/emailService');
+const adminRoutes = require('./routes/adminRoutes');
 
 // 2. Configuration
 
@@ -46,10 +47,14 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/', authRoutes); // This mounts /login and /logout
-app.use(memberRoutes);
-app.use(trainerRoutes);
-app.use(planRoutes);
+// app.use('/auth', authRoutes); // Now login will be at /auth/login
+// OR if you want to keep /login directly:
+app.use('/', authRoutes); 
+app.use('/', memberRoutes);
+app.use('/', trainerRoutes);
+app.use('/', planRoutes);
+// 2. Mount the routes
+app.use('/', adminRoutes); // This enables /admin/notices
 
 cron.schedule('0 0 * * *', async () => {
     try {
@@ -93,10 +98,7 @@ cron.schedule('0 0 * * *', async () => {
 
 
 
-// 5. Database Connection
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("✅ MongoDB Connected for Gym System"))
-    .catch(err => console.log("❌ DB Connection Error:", err));
+
 
 // 6. Basic Route for Testing
 app.get('/', (req, res) => {
@@ -130,6 +132,11 @@ app.get('/dashboard', auth, async (req, res) => {
         res.status(500).send("Dashboard Error");
     }
 });
+
+// 5. Database Connection
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("✅ MongoDB Connected for Gym System"))
+    .catch(err => console.log("❌ DB Connection Error:", err));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));

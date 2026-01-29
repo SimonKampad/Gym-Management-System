@@ -1,15 +1,16 @@
 const nodemailer = require('nodemailer');
 
-const sendExpiryWarning = async (memberEmail, memberName, daysLeft) => {
-    // We create the transporter INSIDE the function to ensure ENV variables are loaded
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        }
-    });
+// 1. Create the transporter once at the top level
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
 
+// 2. Function for Expiry Warnings
+const sendExpiryWarning = async (memberEmail, memberName, daysLeft) => {
     const mailOptions = {
         from: `"GymMaster Pro" <${process.env.EMAIL_USER}>`,
         to: memberEmail,
@@ -18,8 +19,29 @@ const sendExpiryWarning = async (memberEmail, memberName, daysLeft) => {
                <p>Your gym plan is expiring in <b>${daysLeft} days</b>. 
                Please visit the gym desk to renew and keep grinding!</p>`
     };
-
     return transporter.sendMail(mailOptions);
 };
 
-module.exports = sendExpiryWarning;
+// 3. Function for General Announcements
+const sendGeneralNotice = async (toEmail, userName, title, message) => {
+    const mailOptions = {
+        from: `"GymMaster Pro" <${process.env.EMAIL_USER}>`,
+        to: toEmail,
+        subject: `📢 Gym Announcement: ${title}`,
+        html: `
+            <div style="font-family: sans-serif; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+                <h2 style="color: #EF4444;">Hello ${userName},</h2>
+                <p style="font-size: 16px; color: #333;">${message}</p>
+                <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                <p style="font-size: 12px; color: #888;">Best Regards,<br><strong>GymMaster Management</strong></p>
+            </div>
+        `
+    };
+    return transporter.sendMail(mailOptions);
+};
+
+// 4. Export both functions clearly
+module.exports = { 
+    sendExpiryWarning, 
+    sendGeneralNotice 
+};

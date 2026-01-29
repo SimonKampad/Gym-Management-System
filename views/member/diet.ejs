@@ -1,0 +1,210 @@
+<%- include('../partials/header') %>
+<div class="min-h-screen bg-gym-dark p-6">
+    <div class="max-w-6xl mx-auto">
+        
+        <div class="flex justify-center items-center mb-12 space-x-4">
+            <div id="step1-indicator" class="step-circle step-complete">✓</div>
+            <div class="h-1 w-10 bg-gray-800"></div>
+            <div id="step2-indicator" class="step-circle">2</div>
+            <div class="h-1 w-10 bg-gray-800"></div>
+            <div id="step3-indicator" class="step-circle">3</div>
+        </div>
+
+        <div id="step-1" class="text-center animate-fade-in">
+            <h2 class="text-4xl font-display text-white mb-4 uppercase tracking-tighter">What is your <span class="gradient-text">Goal?</span></h2>
+            <p class="text-gray-400 mb-10">Select your primary fitness objective</p>
+            <div class="flex flex-col md:flex-row justify-center gap-6">
+                <div onclick="selectGoal('loss')" class="option-card group">
+                    <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">📉</div>
+                    <h3 class="text-white text-xl font-bold uppercase">Weight Loss</h3>
+                    <p class="text-gray-500 text-xs mt-2">Burn fat & get lean</p>
+                </div>
+                <div onclick="selectGoal('bulk')" class="option-card group">
+                    <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">💪</div>
+                    <h3 class="text-white text-xl font-bold uppercase">Bulking</h3>
+                    <p class="text-gray-500 text-xs mt-2">Gain muscle & strength</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="step-2" class="text-center hidden animate-fade-in">
+            <h2 class="text-4xl font-display text-white mb-4 uppercase tracking-tighter">Your <span class="gradient-text">Dietary</span> Preference?</h2>
+            <p class="text-gray-400 mb-10">How do you prefer to eat?</p>
+            <div class="flex flex-col md:flex-row justify-center gap-6">
+                <div onclick="selectType('veg')" class="option-card group">
+                    <div class="text-4xl mb-4 group-hover:rotate-12 transition-transform">🥗</div>
+                    <h3 class="text-white text-xl font-bold uppercase">Pure Veg</h3>
+                </div>
+                <div onclick="selectType('nonveg')" class="option-card group">
+                    <div class="text-4xl mb-4 group-hover:rotate-12 transition-transform">🍗</div>
+                    <h3 class="text-white text-xl font-bold uppercase">Non-Veg</h3>
+                </div>
+            </div>
+            <button onclick="goBack(1)" class="back-link">Back to Goals</button>
+        </div>
+
+        <div id="step-3" class="hidden animate-fade-in">
+            <div class="flex justify-between items-center mb-10 bg-gym-gray p-5 rounded-2xl border border-gym-light">
+                <div class="text-white font-bold uppercase text-sm tracking-widest">
+                    Plan for: <span id="summary-text" class="text-gym-red"></span>
+                </div>
+                <button onclick="resetWizard()" class="reset-btn">Change Selection 🔄</button>
+            </div>
+            
+            <div id="diet-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    /* Proper Cursor & Interaction Rules */
+    .option-card {
+        @apply bg-gym-gray border-2 border-gray-800 p-10 rounded-[2.5rem] transition-all duration-300 w-full md:w-64;
+        cursor: pointer; /* Ensures the hand icon appears */
+    }
+    
+    .option-card:hover {
+        @apply border-gym-red shadow-[0_0_30px_rgba(239,68,68,0.2)] scale-[1.02];
+    }
+
+    .option-card:active {
+        @apply scale-95;
+    }
+
+    .back-link {
+        @apply mt-8 text-gray-500 hover:text-white text-xs uppercase underline transition-colors;
+        cursor: pointer;
+    }
+
+    .reset-btn {
+        @apply text-gray-400 text-xs hover:text-gym-red uppercase font-bold transition-colors;
+        cursor: pointer;
+    }
+
+    .step-circle {
+        @apply w-10 h-10 rounded-full flex items-center justify-center border-2 border-gray-800 text-gray-500 font-bold transition-all;
+    }
+
+    .step-active {
+        @apply bg-gym-red border-gym-red text-white scale-110 shadow-[0_0_15px_rgba(239,68,68,0.4)];
+    }
+
+    .step-complete {
+        @apply bg-green-500 border-green-500 text-white;
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .gradient-text {
+        background: linear-gradient(135deg, #EF4444 0%, #F97316 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+</style>
+
+<script>
+    // Logic remains the same as before, ensuring renderDiet() populates the cards correctly
+    let selections = { goal: '', type: '' };
+
+    const dietPlans = {
+        loss: {
+            veg: [
+                { meal: 'Breakfast', items: '• Sprouted Moong Salad<br>• Green Tea<br>• 1 Apple<br>• 5 Almonds', cal: 280, pro: '14g', time: '8:00 AM' },
+                { meal: 'Lunch', items: '• 1 Bran Roti<br>• Mixed Dal bowl<br>• Cucumber Salad<br>• 1 Cup Buttermilk', cal: 420, pro: '20g', time: '1:30 PM' },
+                { meal: 'Dinner', items: '• Sautéed Paneer (120g)<br>• Broccoli Stir-fry<br>• Clear Veg Soup', cal: 350, pro: '24g', time: '8:30 PM' }
+            ],
+            nonveg: [
+                { meal: 'Breakfast', items: '• 4 Egg White Omelet<br>• Spinach & Mushroom<br>• Black Coffee', cal: 240, pro: '22g', time: '8:00 AM' },
+                { meal: 'Lunch', items: '• Grilled Chicken (150g)<br>• Steamed Beans<br>• Fresh Salad', cal: 380, pro: '38g', time: '1:30 PM' },
+                { meal: 'Dinner', items: '• Baked Fish/Lemon Chicken<br>• Warm Cabbage Salad<br>• Clear Broth', cal: 310, pro: '32g', time: '8:30 PM' }
+            ]
+        },
+        bulk: {
+            veg: [
+                { meal: 'Breakfast', items: '• Oats with Milk & Banana<br>• 1 Paneer Sandwich<br>• 1 tbsp Honey', cal: 750, pro: '35g', time: '8:00 AM' },
+                { meal: 'Lunch', items: '• 3 Chapatis + Brown Rice<br>• Paneer Butter Masala<br>• Dal Tadka + Curd', cal: 900, pro: '30g', time: '1:30 PM' },
+                { meal: 'Dinner', items: '• Soya Chunk Pulao<br>• 2 Parathas<br>• Mixed Bean Salad', cal: 780, pro: '38g', time: '8:30 PM' }
+            ],
+            nonveg: [
+                { meal: 'Breakfast', items: '• 4 Whole Eggs + 2 Toast<br>• Peanut Butter<br>• 1 Banana', cal: 800, pro: '48g', time: '8:00 AM' },
+                { meal: 'Lunch', items: '• Chicken Biryani (Large)<br>• Boiled Egg Salad<br>• Raita', cal: 950, pro: '55g', time: '1:30 PM' },
+                { meal: 'Dinner', items: '• Mutton/Fish Curry<br>• 3 Rotis + Rice<br>• Sweet Potato', cal: 850, pro: '45g', time: '9:00 PM' }
+            ]
+        }
+    };
+
+    function selectGoal(g) {
+        selections.goal = g;
+        document.getElementById('step-1').classList.add('hidden');
+        document.getElementById('step-2').classList.remove('hidden');
+        
+        const s1 = document.getElementById('step1-indicator');
+        s1.className = "step-circle step-complete";
+        s1.innerHTML = "✓";
+        
+        document.getElementById('step2-indicator').classList.add('step-active');
+    }
+
+    function selectType(t) {
+        selections.type = t;
+        document.getElementById('step-2').classList.add('hidden');
+        document.getElementById('step-3').classList.remove('hidden');
+        
+        const s2 = document.getElementById('step2-indicator');
+        s2.className = "step-circle step-complete";
+        s2.innerHTML = "✓";
+        
+        document.getElementById('step3-indicator').classList.add('step-active');
+        renderDiet();
+    }
+
+    function renderDiet() {
+        const grid = document.getElementById('diet-grid');
+        grid.innerHTML = '';
+        const goalText = selections.goal === 'loss' ? 'Weight Loss' : 'Bulking';
+        const typeText = selections.type === 'veg' ? 'Pure Veg' : 'Non-Veg';
+        document.getElementById('summary-text').innerText = `${goalText} | ${typeText}`;
+
+        dietPlans[selections.goal][selections.type].forEach(p => {
+            grid.innerHTML += `
+                <div class="bg-gym-gray border border-gym-light p-8 rounded-[2.5rem] hover:border-gym-red transition-all duration-500 group animate-fade-in">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="text-gym-red font-mono text-xs font-black bg-gym-red/10 px-3 py-1 rounded-full">${p.time}</span>
+                        <span class="bg-gym-light text-white px-3 py-1 rounded-lg text-[11px] font-bold">${p.cal} CAL</span>
+                    </div>
+                    <h3 class="text-white font-display text-3xl mb-4 group-hover:text-gym-red transition-colors uppercase">${p.meal}</h3>
+                    <div class="space-y-2 mb-8 min-h-[140px] text-gray-400 text-sm leading-relaxed">${p.items}</div>
+                    <div class="pt-6 border-t border-gray-800 flex justify-between items-center">
+                        <span class="text-gray-500 text-[10px] uppercase font-black">Protein</span>
+                        <span class="text-white font-black text-lg">${p.pro}</span>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function resetWizard() {
+        location.reload();
+    }
+
+    function goBack(step) {
+        if(step === 1) {
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('step-1').classList.remove('hidden');
+            const s1 = document.getElementById('step1-indicator');
+            s1.className = "step-circle step-active";
+            s1.innerHTML = "1";
+            document.getElementById('step2-indicator').className = "step-circle";
+        }
+    }
+</script>
+<%- include('../partials/footer') %>

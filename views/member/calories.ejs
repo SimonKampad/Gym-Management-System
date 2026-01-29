@@ -1,0 +1,146 @@
+<%- include('../partials/header') %>
+<div class="min-h-screen bg-gym-dark p-6">
+    <div class="max-w-4xl mx-auto">
+        <div class="mb-10">
+            <h1 class="text-4xl font-display text-white mb-2">CALORIE <span class="gradient-text">CALCULATOR</span></h1>
+            <p class="text-gray-400">Scientifically calculated daily targets based on your unique body stats.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div class="bg-gym-gray p-8 rounded-[2.5rem] border border-gym-light">
+                <h3 class="text-white font-bold uppercase text-xs mb-6 tracking-widest">Current Stats</h3>
+                <div class="space-y-6">
+                    <div class="flex justify-between p-4 bg-gym-light rounded-xl">
+                        <span class="text-gray-500 text-sm">Latest Weight</span>
+                        <span class="text-white font-bold"><%= member.weightHistory.length > 0 ? member.weightHistory[member.weightHistory.length - 1].weight : '70' %> kg</span>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-500 text-[10px] font-black uppercase mb-2 ml-1">Daily Activity Level</label>
+                        <select id="activity" class="w-full bg-gym-light p-4 rounded-xl text-white outline-none border border-transparent focus:border-gym-red cursor-pointer transition-all">
+                            <option value="1.2">Sedentary (Office job, no exercise)</option>
+                            <option value="1.375">Lightly Active (1-3 days/week)</option>
+                            <option value="1.55" selected>Moderately Active (3-5 days/week)</option>
+                            <option value="1.725">Very Active (6-7 days/week)</option>
+                        </select>
+                    </div>
+
+                    <button onclick="calculateDaily()" class="w-full bg-gradient-to-r from-gym-red to-gym-orange text-white font-bold py-4 rounded-xl uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all cursor-pointer shadow-lg shadow-gym-red/20">
+                        Calculate Targets
+                    </button>
+                </div>
+            </div>
+
+            <div id="results" class="hidden animate-fade-in bg-gym-gray p-8 rounded-[2.5rem] border border-gym-red shadow-[0_0_30px_rgba(239,68,68,0.1)]">
+                <h3 class="text-white font-bold uppercase text-xs mb-6 tracking-widest">Your Daily Targets</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center bg-gym-light p-5 rounded-2xl border border-gray-800">
+                        <span class="text-gray-400 font-medium">Calories</span>
+                        <span id="res-cal" class="text-3xl font-black text-white">---</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bg-gym-light p-4 rounded-2xl text-center border border-gray-800">
+                            <p class="text-[9px] text-gray-500 font-black uppercase mb-1">Protein</p>
+                            <p id="res-pro" class="text-white font-bold text-lg">--g</p>
+                        </div>
+                        <div class="bg-gym-light p-4 rounded-2xl text-center border border-gray-800">
+                            <p class="text-[9px] text-gray-500 font-black uppercase mb-1">Carbs</p>
+                            <p id="res-carb" class="text-white font-bold text-lg">--g</p>
+                        </div>
+                        <div class="bg-gym-light p-4 rounded-2xl text-center border border-gray-800">
+                            <p class="text-[9px] text-gray-500 font-black uppercase mb-1">Fats</p>
+                            <p id="res-fat" class="text-white font-bold text-lg">--g</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 bg-blue-500/10 border border-blue-500/20 p-4 rounded-xl flex items-start space-x-3">
+                        <span class="text-blue-400">💡</span>
+                        <p class="text-blue-400 text-[11px] italic leading-tight">
+                            <strong>PRO TIP:</strong> These are estimated targets. Track your weight every Monday morning. If your weight doesn't move for 2 weeks, adjust by 100-200 calories.
+                        </p>
+                    </div>
+
+                    <button class="w-full mt-4 bg-gym-light border border-gray-700 text-gray-300 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-gray-800 cursor-pointer transition-all">
+                        Save Targets to Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-20 border-t border-gray-800 pt-12">
+            <h3 class="text-white font-display text-3xl mb-8 text-center tracking-tighter">HOW WE CALCULATE <span class="gradient-text">YOUR PLAN</span></h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gym-gray/40 p-6 rounded-3xl border border-gym-light hover:border-gym-red transition-all duration-500">
+                    <div class="w-10 h-10 bg-gym-red/10 rounded-full flex items-center justify-center text-gym-red font-black mb-4">01</div>
+                    <h4 class="text-white font-bold mb-2 uppercase text-sm">Basal Metabolism</h4>
+                    <p class="text-gray-500 text-xs leading-relaxed">
+                        We use the <strong>Mifflin-St Jeor</strong> formula to find your BMR—the calories your body burns at total rest just to keep your organs functioning.
+                    </p>
+                </div>
+
+                <div class="bg-gym-gray/40 p-6 rounded-3xl border border-gym-light hover:border-gym-red transition-all duration-500">
+                    <div class="w-10 h-10 bg-gym-red/10 rounded-full flex items-center justify-center text-gym-red font-black mb-4">02</div>
+                    <h4 class="text-white font-bold mb-2 uppercase text-sm">Activity Loading</h4>
+                    <p class="text-gray-500 text-xs leading-relaxed">
+                        Your BMR is multiplied by your <strong>Activity Factor</strong>. This accounts for the energy you spend during gym sessions, walking, and working.
+                    </p>
+                </div>
+
+                <div class="bg-gym-gray/40 p-6 rounded-3xl border border-gym-light hover:border-gym-red transition-all duration-500">
+                    <div class="w-10 h-10 bg-gym-red/10 rounded-full flex items-center justify-center text-gym-red font-black mb-4">03</div>
+                    <h4 class="text-white font-bold mb-2 uppercase text-sm">Macro Splitting</h4>
+                    <p class="text-gray-500 text-xs leading-relaxed">
+                        We split your total energy into <strong>30% Protein</strong> (Muscle), <strong>40% Carbs</strong> (Energy), and <strong>30% Fats</strong> (Hormones).
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<script>
+function calculateDaily() {
+    // Safety check for weight history
+    const weightHistory = <%- JSON.stringify(member.weightHistory || []) %>;
+    const weight = weightHistory.length > 0 ? weightHistory[weightHistory.length - 1].weight : 70;
+    
+    const height = <%= member.height || 170 %>;
+    const age = <%= member.age || 25 %>;
+    const gender = '<%= member.gender || "Male" %>';
+    const activity = parseFloat(document.getElementById('activity').value);
+
+    // BMR Calculation (Mifflin-St Jeor)
+    let bmr = (10 * weight) + (6.25 * height) - (5 * age);
+    bmr = (gender === 'Male') ? bmr + 5 : bmr - 161;
+
+    // Maintenance Calories
+    const maintenance = Math.round(bmr * activity);
+    
+    // Macro Math (30% Pro, 40% Carb, 30% Fat)
+    const proGrams = Math.round((maintenance * 0.30) / 4);
+    const carbGrams = Math.round((maintenance * 0.40) / 4);
+    const fatGrams = Math.round((maintenance * 0.30) / 9);
+
+    // Update UI
+    document.getElementById('res-cal').innerText = maintenance + " kcal";
+    document.getElementById('res-pro').innerText = proGrams + "g";
+    document.getElementById('res-carb').innerText = carbGrams + "g";
+    document.getElementById('res-fat').innerText = fatGrams + "g";
+    
+    document.getElementById('results').classList.remove('hidden');
+    window.scrollTo({ top: document.getElementById('results').offsetTop - 50, behavior: 'smooth' });
+}
+</script>
+<%- include('../partials/footer') %>

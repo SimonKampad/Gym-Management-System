@@ -1,0 +1,46 @@
+<%- include('../partials/header') %>
+<div class="flex min-h-screen">
+    <%- include('../partials/sidebar') %>
+    
+    <main class="flex-1 p-8 bg-gym-dark">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h1 class="text-4xl font-display text-white">TODAY'S <span class="gradient-text">ATTENDANCE</span></h1>
+                    <p class="text-gray-400">Live check-ins for today</p>
+                </div>
+                <span class="bg-gym-gray border border-gym-light text-white px-4 py-2 rounded-xl text-sm font-bold">
+                    Total: <%= attendance.length %>
+                </span>
+            </div>
+
+            <div class="bg-gym-gray rounded-3xl border border-gym-light overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-gym-light/50 border-b border-gym-light">
+                        <tr>
+                            <th class="p-4 text-gray-400 uppercase text-xs font-bold">Member Name</th>
+                            <th class="p-4 text-gray-400 uppercase text-xs font-bold">Check-In Time</th>
+                            <th class="p-4 text-gray-400 uppercase text-xs font-bold">Email</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gym-light">
+                        <% if(attendance.length > 0) { %>
+                            <% attendance.forEach(record => { %>
+                                <tr class="hover:bg-gym-light/30 transition-colors">
+                                    <td class="p-4 text-white font-medium"><%= record.member.name %></td>
+                                    <td class="p-4 text-gym-red font-mono text-sm"><%= record.checkInTime %></td>
+                                    <td class="p-4 text-gray-400 text-sm"><%= record.member.email %></td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="3" class="p-10 text-center text-gray-500 italic">No check-ins yet for today.</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+<%- include('../partials/footer') %>

@@ -1,0 +1,137 @@
+<%- include('../partials/header') %>
+
+<div class="min-h-screen bg-gym-dark p-6">
+    
+    <div class="max-w-4xl mx-auto mb-10">
+        <h1 class="text-3xl font-display text-white">
+            WELCOME BACK, 
+            <span class="gradient-text uppercase"><%= member.name %></span>
+        </h1>
+        <p class="text-gray-400">Track your progress and membership status.</p>
+    </div>
+
+    <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- MEMBERSHIP STATUS CARD -->
+        <div class="bg-gym-gray border border-gym-light rounded-3xl p-8 relative overflow-hidden">
+            <div class="relative z-10">
+                
+                <h3 class="text-gray-400 font-bold text-xs uppercase tracking-widest mb-4">
+                    Membership Status
+                </h3>
+
+                <div class="flex items-baseline space-x-2 mb-6">
+                    <span class="text-6xl font-black text-white">
+                        <%= daysLeft > 0 ? daysLeft : 0 %>
+                    </span>
+                    <span class="text-xl text-gray-500 font-bold uppercase">
+                        Days Left
+                    </span>
+                </div>
+
+                <% 
+                    const totalDays = member.plan.duration || 30; // fallback if duration missing
+                    const safeDaysLeft = Number(daysLeft) || 0;
+                    const percent = Math.max(
+                        0,
+                        Math.min(100, (safeDaysLeft / totalDays) * 100)
+                    );
+                %>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-gym-light h-2 rounded-full">
+                    <div 
+                        class="bg-gym-red h-2 rounded-full transition-all duration-500"
+                        style="width: <%= percent %>%">
+                    </div>
+                </div>
+
+                <p class="text-[10px] text-gray-500 mt-4 uppercase font-bold">
+                    Expires on: 
+                    <%= member.expiryDate ? member.expiryDate.toDateString() : "N/A" %>
+                </p>
+
+            </div>
+        </div>
+
+        <!-- PLAN DETAILS CARD -->
+        <div class="bg-gym-gray border border-gym-light rounded-3xl p-8">
+            
+            <h3 class="text-gray-400 font-bold text-xs uppercase tracking-widest mb-4">
+                Current Plan: <%= member.plan.planName %>
+            </h3>
+
+            <ul class="space-y-4">
+                <% 
+                    if (member.plan.description) {
+                        member.plan.description.split(',').forEach(benefit => { 
+                %>
+                    <li class="flex items-center text-gray-300 text-sm">
+                        <svg class="w-5 h-5 text-gym-green mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                        </svg>
+                        <%= benefit.trim() %>
+                    </li>
+                <% 
+                        }); 
+                    } 
+                %>
+            </ul>
+
+        </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="max-w-4xl mx-auto mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
+        <a href="/member/bmi" 
+           class="bg-gym-light p-6 rounded-2xl text-center 
+   hover:border-gym-red border border-transparent 
+   transition-all duration-300 hover:scale-105">
+            <div class="text-2xl mb-2">⚖️</div>
+            <span class="text-xs font-bold text-white uppercase">BMI Calc</span>
+        </a>
+        <!-- Workouts Card -->
+    <a href="/member/workouts" 
+       class="bg-gym-light p-6 rounded-2xl text-center 
+   hover:border-gym-red border border-transparent 
+   transition-all duration-300 hover:scale-105">
+        <div class="text-2xl mb-2">🏋️‍♂️</div>
+        <span class="text-xs font-bold text-white uppercase">Workouts</span>
+    </a>
+    <a href="/member/diet" 
+   class="bg-gym-light p-6 rounded-2xl text-center 
+   hover:border-gym-red border border-transparent 
+   transition-all duration-300 hover:scale-105">
+    <div class="text-2xl mb-2">🥗</div>
+    <span class="text-xs font-bold text-white uppercase">Diet Plan</span>
+</a>
+<a href="/member/progress" 
+   class="bg-gym-light p-6 rounded-2xl text-center 
+   hover:border-gym-red border border-transparent 
+   transition-all duration-300 hover:scale-105">
+    <div class="text-2xl mb-2">📊</div>
+    <span class="text-xs font-bold text-white uppercase">Progress</span>
+</a>
+
+<a href="/member/scan" 
+   class="bg-gym-light p-6 rounded-2xl text-center 
+   hover:border-gym-red border border-transparent 
+   transition-all duration-300 hover:scale-105">
+    <div class="text-2xl mb-2">📱</div>
+    <span class="text-xs font-bold text-white uppercase">Scan Check-In</span>
+</a>
+
+<a href="/member/calories" 
+   class="bg-gym-light p-6 rounded-2xl text-center 
+   hover:border-gym-red border border-transparent 
+   transition-all duration-300 hover:scale-105">
+    <div class="text-2xl mb-2">🔥</div>
+    <span class="text-xs font-bold text-white uppercase">Calorie Calculator</span>
+</a>
+
+
+    </div>
+
+</div>
+
+<%- include('../partials/footer') %>

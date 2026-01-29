@@ -1,0 +1,58 @@
+<%- include('../partials/header') %>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="min-h-screen bg-gym-dark p-6">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-display text-white mb-6">PROGRESS <span class="gradient-text">TRACKER</span></h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-gym-gray p-6 rounded-3xl border border-gym-light h-fit">
+                <h3 class="text-white font-bold mb-4 uppercase text-sm">Log Today's Weight</h3>
+                <form action="/member/progress/add" method="POST" class="space-y-4">
+                    <input type="number" name="weight" step="0.1" placeholder="Weight in kg" 
+                        class="w-full bg-gym-light p-4 rounded-xl text-white outline-none border border-gym-light focus:border-gym-red" required>
+                    <button type="submit" class="w-full bg-gym-red text-white font-bold py-3 rounded-xl uppercase text-xs tracking-widest">Update Progress</button>
+                </form>
+            </div>
+
+            <div class="md:col-span-2 bg-gym-gray p-6 rounded-3xl border border-gym-light">
+                <h3 class="text-white font-bold mb-6 uppercase text-sm">Weight Journey</h3>
+                <canvas id="weightChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const ctx = document.getElementById('weightChart').getContext('2d');
+    
+    // Get data from EJS (we convert the weightHistory array to JS)
+    const history = <%- JSON.stringify(member.weightHistory) %>;
+    const labels = history.map(entry => new Date(entry.date).toLocaleDateString());
+    const data = history.map(entry => entry.weight);
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Weight (kg)',
+                data: data,
+                borderColor: '#EF4444',
+                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                borderWidth: 3,
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#EF4444'
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: false, grid: { color: '#2A2A2A' }, ticks: { color: '#9CA3AF' } },
+                x: { grid: { display: false }, ticks: { color: '#9CA3AF' } }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+</script>
+<%- include('../partials/footer') %>

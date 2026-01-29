@@ -4,6 +4,13 @@
     <%- include('../partials/sidebar') %>
 
     <main class="flex-1 p-8 bg-gym-dark">
+         <button onclick="toggleSidebar()" 
+class="lg:hidden mb-6 p-2 bg-gym-light border border-gray-800 rounded-lg text-white hover:bg-gym-red/20 transition-all">
+
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+    </svg>
+</button>
         <%- include("../partials/messages") %>
 
         <div class="mb-10">

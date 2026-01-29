@@ -1,0 +1,62 @@
+<%- include('../partials/header') %>
+<div class="flex min-h-screen">
+    <%- include('../partials/sidebar') %>
+    
+    <main class="flex-1 p-8 bg-gym-dark">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl font-display text-white mb-2">ANNOUNCEMENT <span class="gradient-text">CENTER</span></h1>
+            <p class="text-gray-400 mb-8">Broadcast messages to all gym members via dashboard and email.</p>
+
+            <div class="bg-gym-gray p-8 rounded-3xl border border-gym-light shadow-xl mb-10">
+                <form action="/admin/notices/add" method="POST" class="space-y-6">
+                    <div>
+                        <label class="block text-gray-400 text-xs font-bold uppercase mb-2">Notice Title</label>
+                        <input type="text" name="title" placeholder="e.g. Holiday Alert: Gym Closed" 
+                            class="w-full bg-gym-light border border-gym-light p-4 rounded-xl text-white outline-none focus:border-gym-red transition-all" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-400 text-xs font-bold uppercase mb-2">Message Content</label>
+                        <textarea name="content" rows="4" placeholder="Write your message here..." 
+                            class="w-full bg-gym-light border border-gym-light p-4 rounded-xl text-white outline-none focus:border-gym-red transition-all" required></textarea>
+                    </div>
+                    
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="flex items-center space-x-4">
+                            <select name="type" class="bg-gym-light border border-gym-light p-3 rounded-xl text-white outline-none">
+                                <option value="Holiday">🌴 Holiday</option>
+                                <option value="Maintenance">🛠️ Maintenance</option>
+                                <option value="Offer">🔥 Special Offer</option>
+                                <option value="Event">🎉 Event</option>
+                            </select>
+                            
+                            <label class="flex items-center text-gray-400 text-sm cursor-pointer group">
+                                <input type="checkbox" name="sendEmail" class="w-5 h-5 rounded border-gym-light bg-gym-light text-gym-red mr-2"> 
+                                <span class="group-hover:text-white transition-colors">Email all members?</span>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="bg-gradient-to-r from-gym-red to-gym-orange text-white font-bold px-8 py-3 rounded-xl uppercase tracking-widest hover:scale-105 transition-all">
+                            Broadcast Notice
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <h3 class="text-white font-display text-2xl mb-4">Recent Posts</h3>
+            <div class="space-y-4">
+                <% notices.forEach(notice => { %>
+                    <div class="bg-gym-light/50 border border-gym-light p-5 rounded-2xl flex justify-between items-start">
+                        <div>
+                            <span class="text-[10px] font-bold text-gym-red uppercase px-2 py-0.5 bg-gym-red/10 rounded-full"><%= notice.type %></span>
+                            <h4 class="text-white font-bold mt-2"><%= notice.title %></h4>
+                            <p class="text-gray-500 text-sm mt-1"><%= notice.content %></p>
+                        </div>
+                        <p class="text-gray-600 text-[10px]"><%= notice.createdAt.toDateString() %></p>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </main>
+</div>
+<%- include('../partials/footer') %>

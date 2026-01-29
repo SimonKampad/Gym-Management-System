@@ -1,0 +1,43 @@
+<%- include('../partials/header') %>
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<div class="min-h-screen bg-gym-dark p-6 flex flex-col items-center">
+    <h1 class="text-3xl font-display text-white mb-6">GYM <span class="gradient-text">CHECK-IN</span></h1>
+    
+    <div id="reader" class="w-full max-w-sm rounded-3xl overflow-hidden border-2 border-gym-red"></div>
+    
+    <div id="result-msg" class="mt-6 p-4 rounded-xl text-center hidden w-full max-w-sm"></div>
+</div>
+
+<script>
+    const html5QrCode = new Html5Qrcode("reader");
+    
+    const qrCodeSuccessCallback = (decodedText) => {
+    html5QrCode.stop(); 
+    
+    fetch('/member/attendance/checkin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scannedCode: decodedText })
+    })
+    .then(res => res.json())
+    .then(data => {
+        const msgBox = document.getElementById('result-msg');
+        msgBox.classList.remove('hidden');
+        msgBox.innerText = data.message;
+        
+        if (data.success) {
+            msgBox.className = "bg-green-500/20 text-green-400 p-4 rounded-xl mt-6";
+            // Wait 2 seconds then redirect
+            setTimeout(() => {
+                window.location.href = "/member/dashboard";
+            }, 2000);
+        } else {
+            msgBox.className = "bg-red-500/20 text-red-400 p-4 rounded-xl mt-6";
+        }
+    });
+};
+
+    const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+    html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
+</script>

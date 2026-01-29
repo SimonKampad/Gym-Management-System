@@ -1,0 +1,121 @@
+<%- include('../partials/header') %>
+<div class="min-h-screen bg-gym-dark p-6">
+    <div class="max-w-4xl mx-auto">
+        <div class="mb-10">
+            <h1 class="text-4xl font-display text-white mb-2">WORKOUT <span class="gradient-text">LIBRARY</span></h1>
+            <p class="text-gray-400">Select a muscle group to view expert-guided exercises.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% categories.forEach(cat => { %>
+                <div onclick="showWorkout('<%= cat %>')" class="group relative overflow-hidden rounded-3xl bg-gym-gray border border-gym-light p-1 cursor-pointer hover:border-gym-red transition-all duration-300">
+                    <div class="p-6">
+                        <div class="w-12 h-12 bg-gym-red/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-gym-red transition-colors">
+                            <svg class="w-6 h-6 text-gym-red group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-display text-white tracking-wide uppercase"><%= cat %></h3>
+                        <p class="text-xs text-gray-500 mt-1">View 10+ Exercises</p>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+
+        <div id="workoutModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
+            <div class="bg-gym-gray w-full max-w-2xl rounded-3xl overflow-hidden border border-gym-light">
+                <div class="p-6 border-b border-gym-light flex justify-between items-center">
+                    <h2 id="modalTitle" class="text-2xl font-display text-white tracking-wider">CHEST WORKOUT</h2>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-white">&times; Close</button>
+                </div>
+                <div id="exerciseList" class="p-6 max-h-[70vh] overflow-y-auto space-y-6">
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const workoutData = {
+    'Chest': [
+        { name: 'Barbell Bench Press', sets: '4 Sets x 10 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/02/b%C3%A4nk-test-4-kompress-100.gif?resize=600%2C600&ssl=1' },
+        { name: 'Incline Dumbbell Press', sets: '3 Sets x 12 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/03/Dumbbell-Incline-Press.gif?resize=600%2C600&ssl=1' },
+        { name: 'Cable Chest Fly', sets: '3 Sets x 15 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/03/cable-chest-fly.gif?resize=600%2C600&ssl=1' },
+        { name: 'Decline Bench Press', sets: '3 Sets x 10 Reps', img: 'https://i.makeagif.com/media/10-08-2018/_cgaL0.gif' },
+        { name: 'Push Ups', sets: '3 Sets x 20 Reps', img: 'https://cdn.jefit.com/assets/img/exercises/gifs/47.gif' }
+    ],
+
+    'Back': [
+        { name: 'Lat Pulldown', sets: '4 Sets x 12 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/03/lat-pulldown-with-pronated-grip.gif?fit=600%2C600&ssl=1' },
+        { name: 'Seated Cable Row', sets: '3 Sets x 12 Reps', img: 'https://www.strengthlog.com/wp-content/uploads/2020/03/cable-row-seated-narrow-grip.gif' },
+        { name: 'One Arm Dumbbell Row', sets: '3 Sets x 10 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/03/Dumbbell-Row.gif?resize=600%2C600&ssl=1' },
+        { name: 'Deadlift', sets: '4 Sets x 8 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/11/Deadlift.gif?resize=600%2C600&ssl=1' },
+        { name: 'Pull Ups', sets: '3 Sets x 12 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/03/pull-up.gif?resize=600%2C600&ssl=1' }
+    ],
+
+    'Legs': [
+        { name: 'Barbell Squat', sets: '4 Sets x 10 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/11/squat.gif?resize=600%2C600&ssl=1' },
+        { name: 'Leg Press', sets: '3 Sets x 12 Reps', img: 'https://www.strengthlog.com/wp-content/uploads/2025/11/leg-press.gif' },
+        { name: 'Leg Extension', sets: '3 Sets x 15 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/03/leg-extension-seated.gif?resize=600%2C600&ssl=1' },
+        { name: 'Hamstring Curl', sets: '3 Sets x 12 Reps', img: 'https://i.pinimg.com/originals/7c/b8/1d/7cb81d05cee3ff472de64d5c18f9b758.gif' },
+        { name: 'Standing Calf Raise', sets: '4 Sets x 20 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/03/calf-raise-standing.gif?resize=600%2C600&ssl=1' }
+    ],
+
+    'Shoulders': [
+        { name: 'Overhead Barbell Press', sets: '4 Sets x 10 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/12/Overhead-press-exercise.gif?resize=600%2C600&ssl=1' },
+        { name: 'Dumbbell Lateral Raise', sets: '3 Sets x 15 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/12/Dumbbell-Lateral-Raise.gif?resize=600%2C600&ssl=1' },
+        { name: 'Front Raise', sets: '3 Sets x 12 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/03/Barbell-Front-Raise.gif?resize=600%2C600&ssl=1' },
+        { name: 'Rear Delt Fly', sets: '3 Sets x 15 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/04/reverse-machine-fly.gif?resize=600%2C600&ssl=1' },
+        { name: 'Arnold Press', sets: '3 Sets x 12 Reps', img: 'https://barbend.com/wp-content/uploads/2023/12/arnold-press-barbend-movement-gif-masters.gif' }
+    ],
+
+    'Arms': [
+        { name: 'Barbell Bicep Curl', sets: '3 Sets x 12 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/12/Barbell-biceps-curl.gif?resize=600%2C600&ssl=1' },
+        { name: 'Tricep Pushdown', sets: '3 Sets x 12 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/03/triceps-pushdown-with-straight-handle.gif?resize=600%2C600&ssl=1' },
+        { name: 'Hammer Curl', sets: '3 Sets x 12 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/02/Hammer-curl.gif?fit=600%2C600&ssl=1' },
+        { name: 'Skull Crushers', sets: '3 Sets x 10 Reps', img: 'https://barbend.com/wp-content/uploads/2022/05/barbell-skull-crusher-barbend-movement-gif-masters.gif' },
+        { name: 'Concentration Curl', sets: '3 Sets x 12 Reps', img: 'https://i0.wp.com/www.strengthlog.com/wp-content/uploads/2020/03/Concentration-curl.gif?resize=600%2C600&ssl=1' }
+    ],
+
+    'Cardio': [
+        { name: 'Treadmill Running', sets: '20 Minutes', img: 'https://media.tenor.com/_ihDGcOIVd8AAAAM/running-on-a-treadmill-anthony-alfredo.gif' },
+        { name: 'Cycling', sets: '20 Minutes', img: 'https://i.pinimg.com/originals/aa/7e/f5/aa7ef52477e4cc57dbc9ed7ed8111904.gif' },
+        { name: 'Jump Rope', sets: '10 Minutes', img: 'https://barbend.com/wp-content/uploads/2024/04/jump-rope-barbend-movement-gif-masters.gif' },
+        { name: 'Rowing Machine', sets: '15 Minutes', img: 'https://www.mitrecsports.com/assets/Row1GIF.gif' },
+        { name: 'Burpees', sets: '3 Sets x 15 Reps', img: 'https://i.pinimg.com/originals/9a/8a/ba/9a8abaa2c8c18f8288592299c6019bda.gif' }
+    ]
+};
+
+
+function showWorkout(category) {
+    const modal = document.getElementById('workoutModal');
+    const title = document.getElementById('modalTitle');
+    const list = document.getElementById('exerciseList');
+    
+    title.innerText = `${category.toUpperCase()} ROUTINE`;
+    list.innerHTML = '';
+
+    if(workoutData[category]) {
+        workoutData[category].forEach(ex => {
+            list.innerHTML += `
+                <div class="bg-gym-light p-4 rounded-2xl flex items-center space-x-4">
+                    <img src="${ex.img}" class="w-24 h-24 rounded-xl object-cover border border-gym-light" />
+                    <div>
+                        <h4 class="text-white font-bold">${ex.name}</h4>
+                        <p class="text-gym-red text-xs font-bold uppercase mt-1">${ex.sets}</p>
+                    </div>
+                </div>
+            `;
+        });
+    } else {
+        list.innerHTML = '<p class="text-gray-500">Workout details coming soon for this category!</p>';
+    }
+
+    modal.classList.remove('hidden');
+}
+
+function closeModal() {
+    document.getElementById('workoutModal').classList.add('hidden');
+}
+</script>
+<%- include('../partials/footer') %>
