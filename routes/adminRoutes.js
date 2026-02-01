@@ -34,18 +34,23 @@ router.post('/admin/notices/add', auth, isAdmin, async (req, res) => {
 
         // 2. If 'Send Email' checkbox was checked, blast to all members
         if (sendEmail === 'on') {
-            const members = await Member.find({}, 'email name');
-            
-            console.log(`Attempting to send ${members.length} emails...`);
+    const members = await Member.find({}, 'email name');
+    console.log(`Attempting to send ${members.length} emails...`);
 
-            // Use Promise.all to send emails in parallel
-            await Promise.all(members.map(member => 
-                sendGeneralNotice(member.email, member.name, title, content)
-            ));
-            
-            console.log("All emails sent successfully.");
-            req.flash('success_msg', 'Notice posted and emails sent to all members!');
-        } else {
+    // Use a for...of loop instead of Promise.all
+    for (const member of members) {
+        try {
+            await sendGeneralNotice(member.email, member.name, title, content);
+            console.log(`✅ Email sent to: ${member.email}`);
+        } catch (emailErr) {
+            console.error(`❌ Failed for ${member.email}:`, emailErr.message);
+            // We don't stop the whole process if one email fails
+        }
+    }
+    
+    console.log("Broadcast process finished.");
+    req.flash('success_msg', 'Notice posted and email process complete!');
+}else {
             req.flash('success_msg', 'Notice posted successfully!');
         }
 
