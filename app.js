@@ -16,7 +16,7 @@ const planRoutes = require('./routes/planRoutes');
 const session = require('express-session');
 const flash = require('connect-flash');
 const cron = require('node-cron');
-const sendExpiryWarning = require('./utils/emailService');
+const {sendExpiryWarning} = require('./utils/emailService');
 const adminRoutes = require('./routes/adminRoutes');
 
 // 2. Configuration
