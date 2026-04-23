@@ -96,6 +96,17 @@ cron.schedule('0 0 * * *', async () => {
     }
 });
 
+// Call external URL every 5 minutes
+cron.schedule('*/5 * * * *', async () => {
+    try {
+        console.log("Calling external service...");
+        const response = await fetch('https://gymmaster-pro.onrender.com/');
+        console.log(`✅ External service called successfully. Status: ${response.status}`);
+    } catch (error) {
+        console.error("❌ Failed to call external service:", error.message);
+    }
+});
+
 
 
 
